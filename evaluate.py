@@ -1,7 +1,6 @@
 import numpy as np
 from sklearn.metrics import precision_score, recall_score, roc_auc_score, f1_score, average_precision_score
 from tqdm import tqdm
-from multiprocessing import Pool
 
 ## EVALUATING FUNCTION
 def pointwise_evaluation(gt_labels, pred_labels, scoring):
@@ -66,8 +65,7 @@ class pointwise_best_f1():
    def go(self):
 
       print('processing pointwise best f1')
-      p = Pool()
-      sc = p.map(self, range(len(self.scoring)))
+      sc = [self(i) for i in range(len(self.scoring))]
 
       return sc
 
@@ -91,8 +89,7 @@ class early_best_f1():
 
     def go(self):
         print('processing early detection best f1 with delay ',str(self.delay))
-        p = Pool()
-        sc = p.map(self, range(len(self.scoring)))
+        sc = [self(i) for i in range(len(self.scoring))]
         return sc
 
     def __call__(self, x):
